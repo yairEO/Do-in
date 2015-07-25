@@ -7,14 +7,13 @@ function Doin(step, duration, done){
     this.duration = duration || 2; 
     this.step = step;
     this.done = done;
-    this.stop = false;
-	this.RAF;
+    this.RAF;
 };
 
 Doin.prototype = {
     run : function(){
         "use strict";
-		cancelAnimationFrame(this.RAF);
+        cancelAnimationFrame(this.RAF);
         var startTime = new Date(),
         that = this;
 
@@ -29,7 +28,7 @@ Doin.prototype = {
             that.step(t, elapsed); 
 
             // stop sequence if duration has passed
-            if( t < 1 || that.stop )
+            if( t < 1 )
                 that.RAF = requestAnimationFrame(run);  // can also use: setTimeout(run, 60/1000) 
             else if(that.done)
                 that.done();
