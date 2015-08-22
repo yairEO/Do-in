@@ -3,10 +3,11 @@
 
 
 ////// Do X in Y seconds /////////
-function Doin(step, duration, done){
-    this.duration = duration || 2; 
-    this.step = step;
-    this.done = done;
+function Doin(settings){  //step, duration, done
+    this.duration = settings.duration || 2; 
+    this.step = settings.step;
+    this.done = settings.done;
+	this.fps = typeof settings.fps != "undefined" ? settings.fps : null;
     this.RAF;
 };
 
@@ -14,8 +15,9 @@ Doin.prototype = {
     run : function(){
         "use strict";
         cancelAnimationFrame(this.RAF);
+		
         var startTime = new Date(),
-        that = this;
+			that = this;
 
         (function run(){
             var now, elapsed, t;
@@ -28,8 +30,12 @@ Doin.prototype = {
             that.step(t, elapsed); 
 
             // stop sequence if duration has passed
-            if( t < 1 )
-                that.RAF = requestAnimationFrame(run);  // can also use: setTimeout(run, 60/1000) 
+            if( t < 1 ){
+				if( that.fps )
+					setTimeout(function(){ requestAnimationFrame(run) }, 1000/that.fps);
+				else
+					that.RAF = requestAnimationFrame(run);  // can also use: setTimeout(run, 60/1000)
+			}
             else if(that.done)
                 that.done();
         })();
