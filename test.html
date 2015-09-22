@@ -9,7 +9,7 @@
             body{ font:14px Arial; background:#FFF; }
             h1{ font-size:20px; border-bottom:2px solid #000; display:inline-block; }
 
-            strong{ 
+            strong{
               font-size:50px;
               color:#444;
               vertical-align:middle;
@@ -55,17 +55,17 @@
           <time>0</time><span>3s</span>
         <input class='speed' type="range" min="1" max="30" step="0.5" value="3">
         </div>
-        
+
         <script>
             // https://github.com/yairEO/Do-in
 
             (function(){
                 var timeElm = $('time')[0],
                     duration = 3; // default duration (in seconds)
-              
+
                 // change time duration slider
                 $('input').on('change', changeTime);
-              
+
                 function changeTime(){
                     duration = this.value;
                     timeElm.nextElementSibling.innerHTML = duration + 's';
@@ -82,7 +82,7 @@
                         $el.data('doin').doin.run();
                     }
                 });
-              
+
                 ////////////////////////////////////////////////////
                 // constructor to run a specific job using Do-in
                 function Task(el, toValue, easingFunc){
@@ -104,24 +104,24 @@
                     this.doin = new Doin(settings);
                     this.doin.run();
                 }
-             
+
                 // a step of the thing we want to do
                 Task.prototype.step = function(t, elapsed){
-                    // easing 
+                    // easing
                     t = this.easing(t);
-                  
+
                     // calculate new value
                     var value = this.delta * t + this.initialValue;
-                  
+
                     // limit value
                     if( t > 0.999 )
                         value = this.toValue;
-                  
+
                     // print value
                     this.el.innerHTML = value|0;
                     timeElm.innerHTML = elapsed.toFixed(2);
                 }
-                
+
                 // on DONE
                 Task.prototype.done = function(){
                     console.log(this.el, 'done counting!');
@@ -141,15 +141,15 @@
                 easeOutQuad: function (t) { return t*(2-t) },
                 // acceleration until halfway, then deceleration
                 easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
-                // accelerating from zero velocity 
+                // accelerating from zero velocity
                 easeInCubic: function (t) { return t*t*t },
-                // decelerating to zero velocity 
+                // decelerating to zero velocity
                 easeOutCubic: function (t) { return (--t)*t*t+1 },
-                // acceleration until halfway, then deceleration 
+                // acceleration until halfway, then deceleration
                 easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
-                // accelerating from zero velocity 
+                // accelerating from zero velocity
                 easeInQuart: function (t) { return t*t*t*t },
-                // decelerating to zero velocity 
+                // decelerating to zero velocity
                 easeOutQuart: function (t) { return 1-(--t)*t*t*t },
                 // acceleration until halfway, then deceleration
                 easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
@@ -157,7 +157,7 @@
                 easeInQuint: function (t) { return t*t*t*t*t },
                 // decelerating to zero velocity
                 easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
-                // acceleration until halfway, then deceleration 
+                // acceleration until halfway, then deceleration
                 easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t },
                 // exponential decelerating
                 exp: function (t) { return (1-Math.exp(-t*7)) }
