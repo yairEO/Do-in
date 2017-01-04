@@ -9,6 +9,8 @@ A task runner which runs any code repeatedly in a given duration of time. Like c
 ### Basic usage
 
 ```javascript
+
+// This function will be called repeatedly until the duration has reached
 var step = function(t, elapsed){
     // easing
     t = t*t*t;
@@ -24,12 +26,13 @@ var step = function(t, elapsed){
     someElement.innerHTML = value|0;
 };
 
+// This function will be called once, when the task has finished
 var done = function(){
     console.log('done counting!');
 };
 
 
-// Do-in settings object
+// Define the task's specific settings
 var settings = {
     step     : step,
     duration : 3,
@@ -37,8 +40,12 @@ var settings = {
     fps      : 24 // optional. Default is requestAnimationFrame
 };
 
-// initialize "Do-in" instance
-var doin = new Doin(settings);
+// create a new "Do-in" task
+var task = new Doin(settings);
+
+task.start();
+
+// Rnu "task.pause()" to stop as any moment. Run "task.start()" to continue the task
 
 ```
 
