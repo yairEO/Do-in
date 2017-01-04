@@ -45,7 +45,7 @@ var task = new Doin(settings);
 
 task.start();
 
-// Rnu "task.pause()" to stop as any moment. Run "task.start()" to continue the task
+// Rnu "task.pause()" to stop as any moment. Run "task.play()" to continue the task
 
 ```
 
