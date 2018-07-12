@@ -19,7 +19,7 @@
 
             strong:after{ content:'To 'attr(data-to)' 'attr(data-easing); opacity:0.3; font-size:0.4em; margin-left:10px; }
 
-            .time{ position:absolute; top:0; right:10px; width:20%; margin-top:20px; color:#666; padding:1em 2em; background:#EEE; font-weight:bold; text-align:center; }
+            .time{ width:20%; margin:20px 0; color:#666; padding:1em 2em; background:lightyellow; border:1px solid gold; font-weight:bold; text-align:center; }
             .time span{ opacity:0.5; }
             .time span:before{ content:' / '; }
             button{ margin-right:15px; padding:10px; }
@@ -28,33 +28,32 @@
         </style>
     </head>
     <body>
-        <h1>Run any job in X seconds. Exmaples:</h1>
-        <br>
-
-        <button>Run</button>
-        <strong data-to='1000' data-easing='exp'>0</strong>
-        <br>
-
-        <button>Run</button>
-        <strong data-to='250' data-easing='easeInCubic'>0</strong>
-        <br>
-
-        <button>Run</button>
-        <strong data-to='30' data-easing='linear'>0</strong>
-        <br>
-
-        <button>Run</button>
-        <strong data-to='256' data-easing='linear'>128</strong>
-        <br>
-
-        <button>Run</button>
-        <strong data-to='100' data-easing='exp'>500</strong>
-        <br>
+        <h1>Run any job in X seconds:</h1>
 
         <div class='time'>
-          <time>0</time><span>3s</span>
-        <input class='speed' type="range" min="1" max="30" step="0.5" value="3">
+            <time>0</time><span>3s</span>
+            <input class='speed' type="range" min="1" max="30" step="0.5" value="3">
         </div>
+
+        <button>Run</button>
+        <strong data-initial='0' data-to='1000' data-easing='exp'>0</strong>
+        <br>
+
+        <button>Run</button>
+        <strong data-initial='0' data-to='250' data-easing='easeInCubic'>0</strong>
+        <br>
+
+        <button>Run</button>
+        <strong data-initial='0' data-to='30' data-easing='linear'>0</strong>
+        <br>
+
+        <button>Run</button>
+        <strong data-initial='128' data-to='256' data-easing='linear'>128</strong>
+        <br>
+
+        <button>Run</button>
+        <strong data-initial='500' data-to='100' data-easing='exp'>500</strong>
+        <br>
 
         <script>
             // https://github.com/yairEO/Do-in
@@ -67,42 +66,60 @@
                 $('input').on('change', changeTime);
 
                 function changeTime(){
-                    duration = this.value;
-                    timeElm.nextElementSibling.innerHTML = duration + 's';
+                    timeElm.nextElementSibling.innerHTML = this.value + 's';
                 };
 
                 // click to start doing stuff
                 $('button').on('click', function(){
-                    var $el = $(this.nextElementSibling);
+                    var $el = $(this.nextElementSibling),
+                        state = this.textContent == 'Run';
+
+                    this.textContent = state ? 'Pause' : 'Run';
+
                     // don't run on already running proccess
                     if( !$el.data('doin') ){
                         $el.data('doin', new Task($el[0], 500, easing.exp));
                     }
                     else{
-                        $el.data('doin').doin.run();
+                        $el.data('doin').doin[!state ? "pause" : "start"]();
                     }
                 });
 
                 ////////////////////////////////////////////////////
                 // constructor to run a specific job using Do-in
-                function Task(el, toValue, easingFunc){
-                    this.el = el;
-                    // get variables
-                    this.initialValue = el.innerHTML|0;
-                    this.toValue = el.getAttribute('data-to') || toValue;
-                    this.delta = this.toValue - this.initialValue;
-                    this.easing = easing[el.getAttribute('data-easing')] || easingFunc;
+                function Task(elm){
+                    this.elm = elm;
+                    this.elmData = elm.dataset;
+                    this.reset();
 
                     // Do-in settings object
                     var settings = {
-                        step : this.step.bind(this),
+                        step     : this.step.bind(this),
                         duration : duration,
-                        done : this.done.bind(this),
-                        fps : 80
+                        done     : this.done.bind(this),
+                        fps      : 60
                     }
                     // create an instance of Do-in
                     this.doin = new Doin(settings);
-                    this.doin.run();
+                    console.time('task time');
+
+                    // start doing things!
+                    this.doin.start();
+
+                    $('input').on('change', this.onChangeTime.bind(this));
+                }
+
+                Task.prototype.reset = function(){
+                    this.value = this.initialValue = +this.elmData.initial;
+                    this.toValue = +this.elmData.to;
+                    this.delta   = this.toValue - this.initialValue;
+                    this.easing  = easing[this.elmData.easing];
+                },
+
+                Task.prototype.onChangeTime = function(e){
+                    this.doin.duration = e.target.value; // input slider value
+                    this.initialValue  = +this.value;    // set "initial value" to be the current value
+                    this.delta         = this.toValue - this.initialValue;
                 }
 
                 // a step of the thing we want to do
@@ -117,15 +134,18 @@
                     if( t > 0.999 )
                         value = this.toValue;
 
+                    this.value = value; // cache value
+
                     // print value
-                    this.el.innerHTML = value|0;
+                    this.elm.innerHTML = value|0;
                     timeElm.innerHTML = elapsed.toFixed(2);
                 }
 
                 // on DONE
                 Task.prototype.done = function(){
-                    console.log(this.el, 'done counting!');
-                    //$(this.el).removeData('doin');
+                    console.timeEnd('task time')
+                    this.reset();
+                    this.elm.previousElementSibling.textContent = 'Run';
                 }
 
             })();
