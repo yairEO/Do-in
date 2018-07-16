@@ -56,4 +56,4 @@ When using `Do-in` for DOM updates, like the in the example or for animation pur
 option for the `Do-in` instance, but let it run at full-speed and **only** apply an *fps* mechanisn within your `step` method.
 This will ensure smooth consistant frame-rate, and will not drop frames, because `Do-in` uses [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) internally.
 
-##[Demo page](https://yaireo.github.io/Do-in)
+## [Demo page](https://yaireo.github.io/Do-in)
