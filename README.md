@@ -1,5 +1,13 @@
+<p align="center">
+  <a href='https://www.npmjs.com/package/@yaireo/do-in'>
+      <img src="https://badgen.net/npm/v/@yaireo/do-in" />
+  </a>
+  <img src="https://badgen.net/bundlephobia/minzip/@yaireo/do-in" />
+</p>
+
 [Do-In](https://yaireo.github.io/Do-in)
 ========
+
 
 Run a task repeatedly in a fixed duration
 
