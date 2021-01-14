@@ -2,7 +2,13 @@
   "name"        : "@yaireo/do-in",
   "version"     : "1.0.5",
   "homepage"    : "https://github.com/yairEO/Do-in",
-  "description" : "A task runner which runs code repeatedly for X seconds and in a given duration of time and calling a `step` method with the progress so far",
+  "description" : "A task runner which runs code repeatedly for for fix duration - calling a `step` method with the progress so far (between 0 and 1)",
+  "keywords": [
+    "task",
+    "runner",
+    "repeat",
+    "time"
+  ],
   "_npmUser"    : {
     "name"  : "vsync",
     "email" : "vsync.design@gmail.com"
@@ -12,6 +18,15 @@
     "email" : "vsync.design@gmail.com"
   },
   "main": "do-in.js",
+  "files": [
+    "do-in.js"
+  ],
+  "np": {
+    "yarn": false,
+    "contents": "dist",
+    "yolo": true
+  },
+  "license": "MIT",
   "repository": {
     "type" : "git",
     "url"  : "git+https://github.com/yairEO/Do-in.git"

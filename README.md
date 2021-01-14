@@ -1,10 +1,10 @@
 [Do-In](https://yaireo.github.io/Do-in)
 ========
 
-Do something repeatedly in X time.
+Run a task repeatedly in a fixed duration
 
 A task runner which runs code repeatedly for X seconds and in a given duration of time and calling a `step` method with the progress so far.
-Most basic examlpe is counting to from one number to number.
+Most basic example is counting to to a number.
 
 ### Basic usage
 
@@ -24,13 +24,12 @@ var step = function(t, elapsed){
 
     // print value (converts it to an integer)
     someElement.innerHTML = value|0;
-};
+}
 
 // This function will be called once, when the task has finished
 var done = function(){
     console.log('done counting!');
-};
-
+}
 
 // Define the task's specific settings
 var settings = {
@@ -38,12 +37,12 @@ var settings = {
     duration : 3,     // in seconds
     done     : done,  // callback function when the task is done
     fps      : 60
-};
+}
 
 // create a new "Do-in" task
-var task = new Doin(settings);
+var task = new Doin(settings)
 
-task.start();
+task.start()
 ````
 
 Run `task.pause()` to pause at any moment.
